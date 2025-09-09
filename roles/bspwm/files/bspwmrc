@@ -19,9 +19,13 @@ bspc config borderless_monocle   true
 bspc config gapless_monocle      true
 bspc config pointer_motion_interval 5
 
-bspc rule -a kitty desktop=I follow=off -o
-bspc rule -a code desktop=II state=monocle follow=off -o
-bspc rule -a google-chrome desktop=III state=monocle follow=off -o
+# cleanup rules
+for rule in $(bspc rule -l | cut -d">" -f1 | sed 's/.$//'); do bspc rule -r $rule; done
+# define rules
+# get names: xprop | grep WM_CLASS -> 2nd string
+bspc rule -a kitty desktop=I follow=off focus=off
+bspc rule -a Code desktop=II follow=off focus=off
+bspc rule -a Google-chrome desktop=III follow=off focus=off
 
 [ "$1" = 0 ] && { 
     sleep 1
