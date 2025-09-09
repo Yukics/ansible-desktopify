@@ -1,0 +1,31 @@
+- become: true
+  block:
+    - name: Install libinput
+      ansible.builtin.apt:
+        name: 
+          - libinput-tools 
+          - xserver-xorg-input-libinput
+        state: present
+    - name: Copy conf
+      copy:
+        backup: true
+        src: ./files/40-libinput.conf
+        dest: /etc/X11/xorg.conf.d/40-libinput.conf
+        mode: 0644
+
+- name: Create ~/.icons folders
+  ansible.builtin.file:
+    path: ~/.local/share/icons/
+    recurse: yes
+    state: directory
+
+- name: Unarchive a file that is already on the remote machine
+  ansible.builtin.unarchive:
+    src: files/Bibata-Modern-Ice.tar.xz
+    dest: ~/.local/share/icons/
+
+- name: Create a symbolic link
+  ansible.builtin.file:
+    src: ~/.local/share/icons/Bibata-Modern-Ice
+    dest: ~/.local/share/icons/default
+    state: link

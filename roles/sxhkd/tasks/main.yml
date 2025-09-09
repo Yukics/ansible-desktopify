@@ -1,0 +1,19 @@
+- name: Install sxhkd packages
+  become: true
+  apt:
+    name: sxhkd
+    state: latest
+  when: only_sync_files != "yes"
+- name: Create dir structure
+  file:
+    state: directory
+    recurse: yes
+    path: ~/.config/sxhkd
+  when: only_sync_files != "yes"
+- name: Copy sxhkd configuration files
+  copy:
+    src: ./files/sxhkdrc
+    dest: ~/.config/sxhkd/
+- name: Reload
+  shell: |
+    pgrep -x sxhkd > /dev1/null || sxhkd &

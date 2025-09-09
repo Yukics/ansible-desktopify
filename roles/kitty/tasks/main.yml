@@ -1,0 +1,24 @@
+- name: Install kitty
+  become: true
+  apt:
+    name: 
+      - kitty
+    state: latest
+  when: only_sync_files != "yes"
+- name: Create dir structure
+  file:
+    state: directory
+    recurse: yes
+    path: ~/.config/kitty
+  when: only_sync_files != "yes"
+- name: Copy kitty configuration files
+  copy:
+    mode: 0664
+    src: ./files/{{ item }}.conf
+    dest: ~/.config/kitty/
+  loop:
+    - fonts
+    - kitty
+- name: Reload kitty (if running)
+  shell: |
+    pgrep kitty && killall -SIGUSR1 kitty || echo "Kitty not running" 

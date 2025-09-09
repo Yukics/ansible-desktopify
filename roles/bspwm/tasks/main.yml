@@ -1,0 +1,22 @@
+- name: Install bspwm packages
+  become: true
+  apt:
+    name: 
+      - bspwm
+      - suckless-tools
+      - libinput-tools
+    state: latest
+  when: only_sync_files != "yes"
+- name: Create dir structure
+  file:
+    state: directory
+    recurse: yes
+    path: ~/.config/bspwm
+  when: only_sync_files != "yes"
+- name: Copy bspwm configuration files
+  copy:
+    mode: 0775
+    src: ./files/bspwmrc
+    dest: ~/.config/bspwm/
+- name: Reload bspwm
+  shell: bspc wm -r

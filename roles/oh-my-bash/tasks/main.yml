@@ -1,0 +1,25 @@
+- name: Check if is already installed
+  register: oh_my_bash_installed
+  ansible.builtin.stat:
+    path: ~/.oh-my-bash
+- name: Download install.sh to /tmp
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh
+    dest: /tmp/install.sh
+    mode: 0755
+  retries: 3
+  delay: 1
+  when: not oh_my_bash_installed.stat.exists
+- name: Install oh my bash
+  ansible.builtin.shell: /tmp/install.sh
+  when: not oh_my_bash_installed.stat.exists
+- name: Select my theme in .bashrc
+  ansible.builtin.lineinfile:
+    path: ~/.bashrc
+    regexp: '^OSH_THEME='
+    line: 'OSH_THEME="{{ osh_theme | default("powerline-icon") }}"'
+- name: Remove install.sh from /tmp
+  ansible.builtin.file:
+    path: /tmp/install.sh
+    state: absent
+  when: not oh_my_bash_installed.stat.exists

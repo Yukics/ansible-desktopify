@@ -1,0 +1,18 @@
+- name: Install dunst packages
+  become: true
+  apt:
+    name: 
+      - dunst
+    state: latest
+  when: only_sync_files != "yes"
+- name: Create dir structure
+  file:
+    state: directory
+    recurse: yes
+    path: ~/.config/dunst/dunstrc
+  when: only_sync_files != "yes"
+- name: Copy dunstrc configuration files
+  copy:
+    mode: 0775
+    src: ./files/dunstrc
+    dest: ~/.config/dunst/dunstrc

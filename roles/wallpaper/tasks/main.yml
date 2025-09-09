@@ -1,0 +1,16 @@
+- name: Install feh package
+  become: true
+  apt:
+    name: feh
+    state: latest
+  when: only_sync_files != "yes"
+- name: Create dir structure
+  file:
+    state: directory
+    recurse: yes
+    path: ~/.config/wallpapers
+  when: only_sync_files != "yes"
+- name: Copy wallpaper
+  copy:
+    src: ./files/wallpaper.jpg
+    dest: ~/.config/wallpapers

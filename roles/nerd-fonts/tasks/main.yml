@@ -1,0 +1,29 @@
+- when: only_sync_files != "yes"
+  block:
+  - name: Create dir structure
+    file:
+      state: directory
+      recurse: yes
+      path: ~/.local/share/fonts/{{ item }}
+    loop: "{{ fonts }}"
+  - name: Download Nerd Fonts
+    get_url:
+      url: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/{{ item }}.tar.xz
+      dest: /tmp/{{ item }}.tar.xz
+      mode: '0644'
+    loop: "{{ fonts }}"
+    loop_control:
+      pause: 2
+    retries: 3
+    delay: 1
+  - name: Unarchive fonts
+    ansible.builtin.unarchive:
+      src: /tmp/{{ item }}.tar.xz
+      dest: ~/.local/share/fonts/{{ item }}
+      remote_src: yes
+    loop: "{{ fonts }}"
+  - name: Remove fonts .tar.xz from /tmp
+    ansible.builtin.file:
+      path: /tmp/{{ item }}.tar.xz
+      state: absent
+    loop: "{{ fonts }}"

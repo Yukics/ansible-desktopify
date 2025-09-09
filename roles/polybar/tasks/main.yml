@@ -1,0 +1,36 @@
+- name: Install polybar packages
+  become: true
+  apt:
+    name: 
+      - polybar
+      - rofi
+      - calc
+      - git
+      - acpi
+    state: latest
+  when: only_sync_files != "yes"
+- name: Install laptop specific packages
+  apt:
+    name: 
+      - brightnessctl
+    state: latest
+  when: 
+    - laptop == "yes"
+    - only_sync_files != "yes"
+- name: Create dir structure
+  file:
+    state: directory
+    recurse: yes
+    path: ~/.config/polybar
+  when: only_sync_files != "yes"
+- name: Copy polybar configuration files
+  copy:
+    src: ./files/yuki
+    dest: ~/.config/polybar/
+    mode: "preserve"
+- name: Changing perm of launch.sh
+  file: 
+    dest: ~/.config/polybar/yuki/launch.sh
+    mode: a+x
+- name: Reload polybar
+  shell: polybar-msg cmd restart

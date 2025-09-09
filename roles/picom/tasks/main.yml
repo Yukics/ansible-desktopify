@@ -1,0 +1,70 @@
+- name: Check if already is installed
+  stat: 
+    path: /usr/local/bin/picom
+  register: picom_installed
+  when: only_sync_files != "yes"
+
+- become: true
+  when: not picom_installed.stat.exists
+  block:
+    - name: Install related packages
+      apt:
+        name:
+          - libconfig-dev
+          - libdbus-1-dev
+          - libegl-dev
+          - libev-dev
+          - libgl-dev
+          - libepoxy-dev
+          - libpcre2-dev
+          - libpixman-1-dev
+          - libx11-xcb-dev
+          - libxcb1-dev
+          - libxcb-composite0-dev
+          - libxcb-damage0-dev
+          - libxcb-glx0-dev
+          - libxcb-image0-dev
+          - libxcb-present-dev
+          - libxcb-randr0-dev
+          - libxcb-render0-dev
+          - libxcb-render-util0-dev
+          - libxcb-shape0-dev
+          - libxcb-util-dev
+          - libxcb-xfixes0-dev
+          - meson
+          - ninja-build
+          - uthash-dev
+          - cmake
+        state: present
+    - name: Download picom source
+      get_url: # v1.25 is latest by now
+        url: https://github.com/yshui/picom/archive/refs/tags/v{{ picom_version }}.tar.gz
+        dest: /tmp/picom.tar.gz
+      retries: 3
+      delay: 5
+    - name: Extract picom source
+      unarchive:
+        src: /tmp/picom.tar.gz
+        dest: /tmp/
+        remote_src: yes
+    - name: Build picom
+      shell: |
+        cd /tmp/picom-{{ picom_version }}
+        ninja -C build install
+    - name: Remove build folder
+      file:
+        path: /tmp/picom-{{ picom_version }}
+        state: absent
+    - name: Remove downloaded tarball
+      file:
+        path: /tmp/picom.tar.gz
+        state: absent
+
+- name: Create .config folder
+  file:
+    path: ~/.config/picom
+    state: directory
+- name: Copy picom configuration
+  copy:
+    src: files/picom.conf
+    dest: ~/.config/picom/picom.conf
