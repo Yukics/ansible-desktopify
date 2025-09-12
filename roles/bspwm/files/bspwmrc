@@ -12,7 +12,7 @@ xsetroot -cursor_name left_ptr
 bspc monitor -d I II III IV V VI VII VIII
 bspc config pointer_motion_interval 60
 bspc config border_width         2
-bspc config window_gap          12
+bspc config window_gap          10
 
 bspc config split_ratio          0.52
 bspc config borderless_monocle   true
@@ -22,14 +22,21 @@ bspc config pointer_motion_interval 5
 # cleanup rules
 for rule in $(bspc rule -l | cut -d">" -f1 | sed 's/.$//'); do bspc rule -r $rule; done
 # define rules
-# get names: xprop | grep WM_CLASS -> 2nd string
-bspc rule -a kitty desktop=I follow=off focus=off
-bspc rule -a Code desktop=II follow=off focus=off
-bspc rule -a Google-chrome desktop=III follow=off focus=off
-
-[ "$1" = 0 ] && { 
-    sleep 1
+if [ ! -e /tmp/startup_completed ]; then
+    # get names: xprop | grep WM_CLASS -> 2nd string
+    bspc rule -a kitty desktop="I" follow=off focus=off -o
+    sleep 0.25
     kitty &
+    bspc rule -a Code desktop="II" follow=off focus=off -o 
+    sleep 0.25
     code &
+    bspc rule -a Google-chrome desktop="III" follow=off focus=off -o
+    sleep 0.25
     google-chrome &
-}
+    touch /tmp/startup_completed
+    # [ "$1" = 0 ] && { 
+    #     kitty &
+    #     code &
+    #     google-chrome &
+    # }
+fi

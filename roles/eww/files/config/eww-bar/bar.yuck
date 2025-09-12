@@ -20,7 +20,6 @@
 ; (defvar music_reveal false)
 ; (defvar wifi_rev false)
 
-
 ; (defpoll COL_WLAN :interval "1m" "~/.config/eww/bar/scripts/wifi --COL")
 ; (defpoll ESSID_WLAN :interval "1m" "~/.config/eww/bar/scripts/wifi --ESSID")
 ; (defpoll WLAN_ICON :interval "1m" "~/.config/eww/bar/scripts/wifi --ICON")
@@ -56,7 +55,6 @@
          :halign "start"
 		 :class "left_modules"
 (workspaces)))
-
 
 (defwidget center []
 	(box :orientation "h" 

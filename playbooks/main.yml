@@ -5,15 +5,15 @@
     only_sync_files: "no" # yes | no
     ansible_become_password: "{{ lookup('ansible.builtin.env', 'ANSIBLE_BECOME_PASSWORD') | default('password', True) }}"
   roles:
-    - nerd-fonts
-    - kitty
-    - oh-my-bash
-    - touchpad # you may encounter issues while tapping your touchpad
+    # - nerd-fonts
+    # - kitty
+    # - oh-my-bash
+    # - touchpad # you may encounter issues while tapping your touchpad
     # - polybar
     - eww
-    - wallpaper
-    - picom
-    - dunst
+    # - wallpaper
+    # - picom
+    # - dunst
     - sxhkd
     - bspwm
   tasks:
