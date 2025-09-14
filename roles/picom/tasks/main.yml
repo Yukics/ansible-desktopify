@@ -1,5 +1,5 @@
 - name: Check if already is installed
-  stat: 
+  stat:
     path: /usr/local/bin/picom
   register: picom_installed
   when: only_sync_files != "yes"
@@ -47,9 +47,14 @@
         src: /tmp/picom.tar.gz
         dest: /tmp/
         remote_src: yes
+    - name: Create build folder
+      file:
+        path: /tmp/picom-{{ picom_version }}/build
+        state: directory
     - name: Build picom
       shell: |
         cd /tmp/picom-{{ picom_version }}
+        meson setup --buildtype=release build
         ninja -C build install
     - name: Remove build folder
       file:

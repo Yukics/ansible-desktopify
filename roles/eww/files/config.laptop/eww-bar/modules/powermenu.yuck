@@ -1,0 +1,24 @@
+(defvar powermenu_display false)
+
+(defwidget powermenu []
+  (eventbox :onhover "${eww} update powermenu_display=true"
+			  :onhoverlost "${eww} update powermenu_display=false"
+    (box :class "powermenu_module" :space-evenly "false" :orientation "h" :spacing "3" 
+      (label :text "⏻ " :class "powermenu_label" )
+      (revealer :transition "slideright"
+          :reveal powermenu_display
+          :duration "350ms"
+        (box :class "powermenu_list" :space-evenly "true" :orientation "h" :spacing "4"
+            (button :class "powermenu_shutdown"
+              :height 1
+              :onclick "shutdown now" "Shutdown"
+            )
+            (button :class "powermenu_reboot"
+              :height 1
+              :onclick "reboot" "Reboot"
+            )
+        )
+      )
+    )
+  )
+)

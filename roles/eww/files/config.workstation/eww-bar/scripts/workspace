@@ -1,0 +1,37 @@
+#!/bin/sh
+workspaces() {
+    
+    # remove first W
+    # split monitors
+    # remove trailing codes
+    STATUS=$(echo $STATE | sed 's/^W//g' | sed 's/^[Mm]\|\:[Mm]/\n/g' | sed 's/\:L[TM]\:TT\:G$\|:\L[TM]$//g')
+    MONITOR=$(echo $STATUS | grep "$MONITOR_SELECTION")
+
+    WIDGET="(box :class "works"	      :orientation "h"       :spacing 5       :space-evenly "true"  "
+    for NODE in $(echo $MONITOR | sed "s/^$MONITOR_SELECTION://g" | tr ":" "\n")
+    do
+        ICON=EMPTY
+        if [[ $NODE ~= "^o.*" ]]; then ICON=$NOTEMPTY ; fi
+        if [[ $NODE ~= "^(O|F).*" ]]; then ICON=$SELECTED ; fi
+        DESKTOP=$(echo $NODE | sed 's/^[fFoO]//g')
+        WIDGET"$WIDGET (button :onclick \"bspc desktop -f $DESKTOP\"	         :class	\"workspace-dot\"	\"$ICON\")  "
+    done
+    WIDGET="$WIDGET )"
+    
+    echo $WIDGET
+}
+
+MONITOR_SELECTION="$(xrandr | grep primary | awk '{print $1}')"
+if [[ "$1x" != "x" ]]; then
+    MONITOR_SELECTION=$1
+fi
+
+EMPTY=""
+NOTEMPTY="󰺕"
+SELECTED=""
+
+workspaces
+
+bspc subscribe | while IFS= read -r STATE ; do
+    workspaces
+done

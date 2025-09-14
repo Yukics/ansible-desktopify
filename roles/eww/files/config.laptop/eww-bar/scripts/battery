@@ -1,0 +1,27 @@
+#!/bin/bash
+
+battery() {
+	BAT=`ls /sys/class/power_supply | grep BAT | head -n 1`
+	BAT_PER=$(cat /sys/class/power_supply/${BAT}/capacity)
+	[[ ${BAT_PER} -gt 90 ]] && echo "$BAT_PER% 󰂂" && exit
+	[[ ${BAT_PER} -gt 80 ]] && echo "$BAT_PER% 󰂁" && exit
+	[[ ${BAT_PER} -gt 96 ]] && echo "$BAT_PER% 󰁹" && exit
+	[[ ${BAT_PER} -gt 70 ]] && echo "$BAT_PER% 󰂀" && exit
+	[[ ${BAT_PER} -gt 60 ]] && echo "$BAT_PER% 󰁿" && exit
+	[[ ${BAT_PER} -gt 50 ]] && echo "$BAT_PER% 󰁾" && exit
+	[[ ${BAT_PER} -gt 40 ]] && echo "$BAT_PER% 󰁽" && exit
+	[[ ${BAT_PER} -gt 30 ]] && echo "$BAT_PER% 󰁼" && exit
+	[[ ${BAT_PER} -gt 20 ]] && echo "$BAT_PER% 󰁻" && exit
+	[[ ${BAT_PER} -gt 10 ]] && echo "$BAT_PER% 󰁺" && exit
+}
+battery_stat() {
+	BAT=`ls /sys/class/power_supply | grep BAT | head -n 1`
+	cat /sys/class/power_supply/${BAT}/status
+}
+
+if [[ "$1" == "--bat" ]]; then
+	battery
+elif [[ "$1" == "--bat-st" ]]; then
+	battery_stat
+fi
+

@@ -1,11 +1,11 @@
 #!/bin/bash
-set -e
+#set -e
 
 if [ ! -d .venv ] && [ ! -f /tmp/already_init ]; then
     echo "[INFO] Install os dependencies"
     sudo apt update -y
     sudo apt install -y software-properties-common python3-venv python3-pip
-    deactivate 2> /dev/null 
+    deactivate 2> /dev/null
     pip3 install --user --break-system-packages pywal
     python3 -m venv .venv
     touch /tmp/already_init

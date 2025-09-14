@@ -1,0 +1,19 @@
+computer_type:
+  workstation: # 1920x1080  
+    min_refresh_rate: 144
+    monitors: 
+      - name: DP-0
+        desktops: "I II III IV V VI VII VIII"
+        top_padding: 28 
+      - name: DP-2
+        desktops: "rI rII rIII rIV rV rVI rVII rVIII"
+        top_padding: 0
+      - name: DP-4
+        desktops: "lI lII lIII lIV lV lVI lVII lVIII"
+        top_padding: 0
+  laptop: # 2560x1440
+    min_refresh_rate: 60
+    monitors: 
+      - name: eDP
+        desktops: "I II III IV V VI VII VIII"
+        top_padding: 40

@@ -1,3 +1,4 @@
+# all photos downloaded from: https://unsplash.com/es/s/fotos/japan
 - name: Install feh package
   become: true
   apt:
@@ -12,5 +13,6 @@
   when: only_sync_files != "yes"
 - name: Copy wallpaper
   copy:
-    src: ./files/wallpaper.jpg
+    mode: "preserve"
+    src: ./files/
     dest: ~/.config/wallpapers

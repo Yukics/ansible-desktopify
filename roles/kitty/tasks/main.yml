@@ -12,10 +12,10 @@
     path: ~/.config/kitty
   when: only_sync_files != "yes"
 - name: Copy kitty configuration files
-  copy:
+  template:
     mode: 0664
-    src: ./files/{{ item }}.conf
-    dest: ~/.config/kitty/
+    src: ./files/{{ item }}.conf.j2
+    dest: ~/.config/kitty/{{ item }}.conf
   loop:
     - fonts
     - kitty

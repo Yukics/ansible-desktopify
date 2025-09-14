@@ -1,0 +1,33 @@
+;;  Music
+(defwidget music [] 
+  (eventbox :onhover "${eww} update music_reveal=true"
+			  :onhoverlost "${eww} update music_reveal=false"
+		(box :class "module-2" :orientation "h" :space-evenly "false" :vexpand "false" :hexpand "false" 
+			(box :class "song_cover_art" :vexpand "false" :hexpand "false" :style "background-image: url('${cover_art}');")
+			(button :class "song" :wrap "true" :onclick "~/.config/eww/bar/scripts/pop music" song)
+	    (revealer :transition "slideright"
+			      :reveal music_reveal
+			      :duration "350ms"
+          (box :vexpand "false" :hexpand "false" :oreintation "h" 
+                    (button :class "song_btn_prev" :onclick "~/.config/eww/bar/scripts/music_info --prev" "")
+					(button :class "song_btn_play" :onclick "~/.config/eww/bar/scripts/music_info --toggle" song_status)
+					(button :class "song_btn_next" :onclick "~/.config/eww/bar/scripts/music_info --next" ""))))))
+
+(defwidget music_pop []
+		(box :class "music_pop" :orientation "h" :space-evenly "false" :vexpand "false" :hexpand "false"
+			(box :class "music_cover_art" :vexpand "false" :hexpand "false" :style "background-image: url('${cover_art}');")
+			(box :orientation "v" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false"
+				(label :halign "center" :class "music" :wrap "true" :limit-width 13 :text song)
+				(label :halign "center" :class "music_artist" :wrap "true" :limit-width 15 :text song_artist)
+				(box :orientation "h" :spacing 15 :halign "center" :space-evenly "false" :vexpand "false" :hexpand "false"
+					(button :class "music_btn_prev" :onclick "~/.config/eww/bar/scripts/music_info --prev" "")
+					(button :class "music_btn_play" :onclick "~/.config/eww/bar/scripts/music_info --toggle" song_status)
+					(button :class "music_btn_next" :onclick "~/.config/eww/bar/scripts/music_info --next" ""))
+				(box :class "music_bar" :halign "center" :vexpand "false" :hexpand "false" :space-evenly "false"
+					(scale :onscroll "mpc -q seek {}" :min 0 :active "true" :max 100 :value current_status)))))
+
+
+;;  music
+		(defwindow music_win :stacking "fg" :focusable "false" :screen 1
+			    :geometry (geometry :x "0" :y "7%" :width 428 :height 104 :anchor "top center")
+			     				(music_pop))

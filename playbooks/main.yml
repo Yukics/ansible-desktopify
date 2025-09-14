@@ -1,17 +1,23 @@
 - name: "Set up desktop environment"
   hosts: local
   vars:
-    laptop: "yes"
-    only_sync_files: "no" # yes | no
+    computer: "workstation" # | laptop --> this variable is meant to be the seed of logic, where are you deploying this?
+    only_sync_files: "no" # | yes
     ansible_become_password: "{{ lookup('ansible.builtin.env', 'ANSIBLE_BECOME_PASSWORD') | default('password', True) }}"
+    apps:
+      - code
+      - google-chrome
+      - obsidian
+      - remote-manager
   roles:
     # - nerd-fonts
+    # - apps
     # - kitty
     # - oh-my-bash
     # - touchpad # you may encounter issues while tapping your touchpad
     # - polybar
     - eww
-    # - wallpaper
+    - wallpaper
     # - picom
     # - dunst
     - sxhkd
@@ -19,4 +25,4 @@
   tasks:
     - name: "Finished"
       ansible.builtin.debug:
-        msg: "Finished setting up desktop environment, please reboot your system."
+        msg: "Finished setting up your desktop environment, please reboot your system."

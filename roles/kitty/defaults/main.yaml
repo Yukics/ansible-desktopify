@@ -1,0 +1,5 @@
+computer_type:
+  workstation:
+    font_size: "12.0"
+  laptop:
+    font_size: "16.0"

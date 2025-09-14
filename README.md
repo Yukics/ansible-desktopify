@@ -1,3 +1,7 @@
+# Requirements
+
++ Ubuntu 24.04
+
 # Setup
 
 ```bash

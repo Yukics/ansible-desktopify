@@ -1,5 +1,5 @@
 - name: Check if already is installed
-  stat: 
+  stat:
     path: ~/.local/bin/eww
   register: eww_installed
   when: only_sync_files != "yes"
@@ -40,10 +40,10 @@
           - cargo
         state: present
 
-- when: 
+- when:
     - only_sync_files != "yes"
     - not eww_installed.stat.exists
-  block: 
+  block:
     - name: Download eww source
       get_url:
         url: https://github.com/elkowar/eww/archive/refs/tags/v{{ eww_version }}.tar.gz
@@ -86,13 +86,13 @@
 - name: Copy eww configuration files
   copy:
     mode: "preserve"
-    src: ./files/config/
+    src: ./files/config.{{ computer }}/
     dest: ~/.config/eww
 
-- name: Update .profile 
+- name: Update .profile
   lineinfile:
     dest: ~/.profile
     line: "export XDG_CONFIG_HOME=~/.config"
 
-- name: Reload eww
-  shell: eww reload
+#- name: Reload eww
+#  shell: ~/.local/bin/eww reload

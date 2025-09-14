@@ -1,7 +1,7 @@
 - name: Install bspwm packages
   become: true
   apt:
-    name: 
+    name:
       - bspwm
       - suckless-tools
       - libinput-tools
@@ -14,9 +14,9 @@
     path: ~/.config/bspwm
   when: only_sync_files != "yes"
 - name: Copy bspwm configuration files
-  copy:
+  ansible.builtin.template:
     mode: 0775
-    src: ./files/bspwmrc
-    dest: ~/.config/bspwm/
+    src: ./files/bspwmrc.j2
+    dest: ~/.config/bspwm/bspwmrc
 - name: Reload bspwm
-  shell: bspc wm -r
+  shell: /usr/bin/bspc wm -r 2> /dev/null || exit 0

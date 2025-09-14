@@ -1,0 +1,20 @@
+(defpoll battery :interval "15s" "$HOME/.config/eww/eww-bar/scripts/battery --bat")
+(defpoll battery_status :interval "1m" "$HOME/.config/eww/eww-bar/scripts/battery --bat-st")
+
+(defwidget battery []
+    (box :class "bat_module" :vexpand "false" :hexpand "false" 
+        (label :text battery :class "iconbat" )
+    )
+)
+
+        ; (circular-progress :value battery
+        ;     :class "batbar"
+        ;     :thickness 4
+        ;     (button 
+        ;         :class "iconbat"
+        ;         :limit-width 6
+        ;         :tooltip "battery on ${battery}%"
+        ;         :show_truncated false
+        ;         :onclick "$HOME/.config/eww/bar/scripts/pop system"
+        ;         :wrap false
+        ;         "󰁹")
