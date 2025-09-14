@@ -4,6 +4,7 @@ pgrep -x sxhkd > /dev/null || sxhkd &
 pgrep -x picom > /dev/null || picom -f --daemon --config "$HOME/.config/picom/picom.conf" &
 # pgrep -x polybar > /dev/null || $HOME/.config/polybar/yuki/launch.sh &
 pgrep -x dunst > /dev/null || dunst &
+ps aux | grep ~/.config/wallpapers/script.sh | grep -v grep | awk '{print $2}' | xargs -I % kill -9 %
 ~/.config/wallpapers/script.sh 15 & # rotate wallpaper every 15min
 xsetroot -cursor_name left_ptr
 
