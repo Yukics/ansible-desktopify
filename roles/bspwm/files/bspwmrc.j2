@@ -6,16 +6,31 @@ pgrep -x picom > /dev/null || picom -f --daemon --config "$HOME/.config/picom/pi
 pgrep -x dunst > /dev/null || dunst &
 ~/.config/wallpapers/script.sh 15 & # rotate wallpaper every 15min
 xsetroot -cursor_name left_ptr
-pgrep -x eww > /dev/null || eww open-many bar &
 
+killall eww
+# screen arg is necessary for workspace script to work 
+eww open bar --screen {{ computer_type[computer]['monitors'][0]['name'] }} --arg type=complex &
+{% if computer == "workstation" %}
+{% for monitor in computer_type[computer]['monitors']%}
+{% if monitor['position'] == "left" %}
+eww open bar --screen {{ monitor['name'] }} --arg type=simple &
+{% endif %}
+{% if monitor['position'] == "right" %}
+eww open bar --screen {{ monitor['name'] }} --arg type=simple &
+{% endif %}
+{% endfor %}
+{% endif %}
+
+# bspc query -M --names
 {% for monitor in computer_type[computer]['monitors'] %}
-bspc config -m {{ monitor['name'] }} top_padding {{ monitor['top_padding'] }} # bspc query -M --names
+bspc config -m {{ monitor['name'] }} top_padding {{ monitor['top_padding'] }} 
 {% endfor %}
 
+# setup monocle layout by default
 {% for monitor in computer_type[computer]['monitors'] %}
 DESKTOP="{{ monitor['desktops'] }}"
 bspc monitor {{ monitor['name'] }} -d $DESKTOP
-for workspace in $DESKTOP; do bspc desktop $workspace --layout monocle; done # setup monocle layout by default
+for workspace in $DESKTOP; do bspc desktop $workspace --layout monocle; done 
 {% endfor %}
 
 bspc config pointer_motion_interval {{ computer_type[computer]['min_refresh_rate'] }}

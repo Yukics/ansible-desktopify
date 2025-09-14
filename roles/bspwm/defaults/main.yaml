@@ -3,14 +3,17 @@ computer_type:
     min_refresh_rate: 144
     monitors: 
       - name: DP-0
+        position: center
         desktops: "I II III IV V VI VII VIII"
         top_padding: 28 
       - name: DP-2
+        position: right
         desktops: "rI rII rIII rIV rV rVI rVII rVIII"
-        top_padding: 0
+        top_padding: 28
       - name: DP-4
+        position: left
         desktops: "lI lII lIII lIV lV lVI lVII lVIII"
-        top_padding: 0
+        top_padding: 28
   laptop: # 2560x1440
     min_refresh_rate: 60
     monitors: 

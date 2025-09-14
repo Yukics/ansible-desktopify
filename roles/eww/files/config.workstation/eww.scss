@@ -2,22 +2,22 @@
 // @import 'eww-bar/modules/workspace', 'eww-bar/modules/date', 'eww-bar/modules/powermenu';
 *{
 	all: unset;
-    font-family: CaskaydiaCove Nerd Font Mono;
-	font-family: feather;
+    font-family: "CaskaydiaCove Nerd Font Mono";
+	// font-family: feather;
 }
 
 /** General **/
 .bar_class {
-    background-color: rgba(29, 31, 62, 0.45);
+    background-color: rgba(29, 31, 62, 0.75);
     border-radius: 12px;
     margin: 0px 4px 0px 4px;
 }
 
 /** Workspace module **/
 .works {
-    font-size: 12px;
+    font-size: 16px;
     font-weight: normal;
-    margin: 2px 0px 0px 0px;
+    margin: 1px 0px 0px 0px;
 
     .workspace-dot {
         margin-left: 6px;
@@ -70,7 +70,7 @@
 
 /** Powermenu **/
 .powermenu_module {
-    font-size: 14px;
+    font-size: 18px;
     padding-right: 0px;
     color: #bfc9db;
 }
@@ -90,5 +90,5 @@
     padding: 0px 20px 0px 0px;
 }
 .iconbat{
-    font-size: 14px;
+    font-size: 18px;
 }

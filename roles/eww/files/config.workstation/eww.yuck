@@ -2,7 +2,7 @@
 (include "eww-bar/bar.yuck")
 
 ;; Windows
-(defwindow bar
+(defwindow bar [type]
     :monitor 0
     :geometry (geometry :x "0%"
                 :y "2px"
@@ -13,7 +13,7 @@
     :stacking "fg"
     :windowtype "dock"
     :wm-ignore false
-(bar_1))
+(complex_bar :type type))
 
 (defwindow calendar
 	:geometry (geometry :x "-40px" 

@@ -1,34 +1,52 @@
 #!/bin/sh
+
+EMPTY=""
+NOTEMPTY="󰺕"
+SELECTED=""
+
+DEBUG="n" # y || n
+
+# pstree is mandatory for this to work
+monitor_auto_selector(){
+   MONITOR_SELECTION=$(pstree -sap $$ | head -2 | tail -1 | sed 's/.*\-\-screen//g' | awk '{print $1}')
+}
+
 workspaces() {
     
     # remove first W
     # split monitors
     # remove trailing codes
     STATUS=$(echo $STATE | sed 's/^W//g' | sed 's/^[Mm]\|\:[Mm]/\n/g' | sed 's/\:L[TM]\:TT\:G$\|:\L[TM]$//g')
-    MONITOR=$(echo $STATUS | grep "$MONITOR_SELECTION")
+    MONITOR=$(echo $STATUS | tr " " "\n" | grep "$MONITOR_SELECTION")
+    
+    if [ "$DEBUG" = "y" ]; then echo "[INFO] [$$] Monitor selected $MONITOR_SELECTION status: $MONITOR" >> /tmp/log; fi
 
-    WIDGET="(box :class "works"	      :orientation "h"       :spacing 5       :space-evenly "true"  "
+    WIDGET="(box :class \"works\"	      :orientation \"h\"       :spacing 5       :space-evenly \"true\"  "
     for NODE in $(echo $MONITOR | sed "s/^$MONITOR_SELECTION://g" | tr ":" "\n")
     do
-        ICON=EMPTY
-        if [[ $NODE ~= "^o.*" ]]; then ICON=$NOTEMPTY ; fi
-        if [[ $NODE ~= "^(O|F).*" ]]; then ICON=$SELECTED ; fi
+        ICON=$EMPTY
+        echo $NODE | grep -E "^o.*" && ICON=$NOTEMPTY
+        echo $NODE | grep -E "^[OF].*" && ICON=$SELECTED
         DESKTOP=$(echo $NODE | sed 's/^[fFoO]//g')
-        WIDGET"$WIDGET (button :onclick \"bspc desktop -f $DESKTOP\"	         :class	\"workspace-dot\"	\"$ICON\")  "
+
+        if [ "$DEBUG" = "y" ]; then echo "[INFO] [$$] Monitor selected $MONITOR_SELECTION NODE: $NODE ICON: $ICON DESKTOP: $DESKTOP" >> /tmp/log; fi
+        
+        WIDGET="$WIDGET (button :onclick \"bspc desktop -f $DESKTOP\"	         :class	\"workspace-dot\"	\"$ICON\")  "
     done
     WIDGET="$WIDGET )"
     
+    if [ "$DEBUG" = "y" ]; then echo "[DEBUG] [$$] Monitor selected $MONITOR_SELECTION widget: \n$WIDGET" >> /tmp/log; fi
+
     echo $WIDGET
 }
 
 MONITOR_SELECTION="$(xrandr | grep primary | awk '{print $1}')"
-if [[ "$1x" != "x" ]]; then
+monitor_auto_selector
+if [ "$1x" != "x" ]; then
     MONITOR_SELECTION=$1
 fi
 
-EMPTY=""
-NOTEMPTY="󰺕"
-SELECTED=""
+if [ "$DEBUG" = "y" ]; then echo "[INFO] [$$] Monitor selected $MONITOR_SELECTION"  >> /tmp/log; fi
 
 workspaces
 

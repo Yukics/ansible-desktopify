@@ -41,12 +41,12 @@
 ; (defpoll cover_art :interval "2s"  "~/.config/eww/bar/scripts/music_info --cover")
 
 ;; bar
-(defwidget bar_1 []
+(defwidget complex_bar [type]
   (box :class "bar_class"
        :orientation "h"
     (left)
-    (center)
-    (right)
+    (center :type type)
+    (right :type type)
 ))
 
 (defwidget left []
@@ -56,8 +56,9 @@
 		 :class "left_modules"
 (workspaces)))
 
-(defwidget center []
+(defwidget center [type]
 	(box :orientation "h" 
+         :visible { type == "complex" }
 		 :space-evenly false  
          :halign "center"
 		 :class "center_modules"
@@ -65,8 +66,9 @@
 ))
 ;         ;  (music)))
 
-(defwidget right []
+(defwidget right [type]
 	(box :orientation "h" 
+         :visible { type == "complex" }
 		 :space-evenly false  
          :halign "end"
 		 :class "right_modules"
