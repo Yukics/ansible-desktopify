@@ -135,3 +135,12 @@ super + alt + shift + {h,j,k,l}
 # move a floating window
 super + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}
+
+#
+# volume
+#
+XF86AudioRaiseVolume
+	~/.config/eww/eww-bar/scripts/volume up
+
+XF86AudioLowerVolume
+	~/.config/eww/eww-bar/scripts/volume down

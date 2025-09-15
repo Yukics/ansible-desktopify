@@ -1,0 +1,18 @@
+#!/bin/sh
+
+MAX_VOL=65536
+PERCENTAGE_INTERVAL=5
+INCREMENTS=$(( (PERCENTAGE_INTERVAL*MAX_VOL)/100 ))
+
+INDEX=$(pactl list short | grep RUNNING | sed -e 's,^\([0-9][0-9]*\)[^0-9].*,\1,')
+CURRENT_VOLUME=$(pactl get-sink-volume $INDEX | tr '\/' '\n' | grep front | sed 's/Volume\: //g' | awk '{print $4}')
+
+if [ "$1" = "up" ]
+then 
+    pacmd set-sink-volume $INDEX $(( CURRENT_VOLUME+INCREMENTS ))
+fi
+
+if [ "$1" = "down" ]
+then 
+    pacmd set-sink-volume $INDEX $(( CURRENT_VOLUME-INCREMENTS ))
+fi
