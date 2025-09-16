@@ -2,7 +2,6 @@
 (include "eww-bar/modules/workspace.yuck")
 (include "eww-bar/modules/date.yuck")
 (include "eww-bar/modules/powermenu.yuck")
-(include "eww-bar/modules/battery.yuck")
 
 ;; Variables
 (defvar eww "$HOME/.local/bin/eww")
@@ -72,7 +71,6 @@
 		 :space-evenly false  
          :halign "end"
 		 :class "right_modules"
-    (battery)
     (powermenu))
 )
 ; (bright)
@@ -82,7 +80,7 @@
 ; (bat)
 ; (mem)
 ; (sep)
-; (clock_module)))
+
 
 ;; widgets
 

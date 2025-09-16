@@ -17,7 +17,7 @@
     # - touchpad # you may encounter issues while tapping your touchpad
     # - polybar
     - eww
-    - wallpaper
+    # - wallpaper
     # - picom
     # - dunst
     - sxhkd
