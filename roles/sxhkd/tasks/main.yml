@@ -12,8 +12,9 @@
   when: only_sync_files != "yes"
 - name: Copy sxhkd configuration files
   copy:
-    src: ./files/sxhkdrc
+    src: ./files/
     dest: ~/.config/sxhkd/
+    mode: 'preserve'
 - name: Reload
   shell: |
     pgrep -x sxhkd > /dev1/null || sxhkd &

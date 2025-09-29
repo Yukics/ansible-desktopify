@@ -1,5 +1,0 @@
-(deflisten workspace "eww-bar/scripts/workspace" )
-
-(defwidget workspaces []
-  (literal :content workspace)
-)

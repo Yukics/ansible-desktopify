@@ -12,9 +12,16 @@ super + c
 # browser
 super + b
 	google-chrome
+# obsidian
+super + o
+	obsidian
+# discord
+super + d
+	discord
 # program launcher
 super + @space
 	dmenu_run
+
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd
@@ -63,11 +70,13 @@ super + ctrl + {m,x,y,z}
 # focus/swap
 #
 
-# focus the node in the given direction
-# super + {_,shift + }{h,j,k,l}
-	# bspc node -{f,s} {west,south,north,east}
+# focus or move the node in the given direction or 
 super + {_,shift + }{Left,Down,Up,Right}
 	bspc node -{f,s} {west,south,north,east}
+
+# move node to other desktop
+super + alt + {Left,Right}
+    bspc node -d {prev,next}.local --follow;
 
 # focus the node for the given path jump
 # super + {p,b,comma,period}
@@ -77,9 +86,16 @@ super + {_,shift + }{Left,Down,Up,Right}
 # super + {_,shift + }c
 # 	bspc node -f {next,prev}.local.!hidden.window
 
-# focus the next/previous desktop in the current monitor
-# super + bracket{left,right}
+# jump to specific workspace
+super + alt + {1-8}
+	~/.config/sxhkd/scripts/workspace_change {1-8}
+
+# switch all monitor wokrspaces
 super + ctrl + {Left,Right}
+	~/.config/sxhkd/scripts/workspace_change {prev,next}
+
+# switch current monitor workspace
+super + ctrl + alt + {Left,Right}
 	bspc desktop -f {prev,next}.local
 
 # focus the last node/desktop
@@ -87,19 +103,17 @@ super + {grave,Tab}
 	bspc {node,desktop} -f last
 
 # focus the older or newer node in the focus history
-super + {o,i}
-	bspc wm -h off; \
-	bspc node {older,newer} -f; \
-	bspc wm -h on
+# change to super + tab and super + shift + tab
+# super + {o,i}
+# 	bspc wm -h off; \
+# 	bspc node {older,newer} -f; \
+# 	bspc wm -h on
 
 # focus or send to the given desktop
 # super + {_,shift + }{1-9,0}
-super + {_,shift + }{1-8}
-	bspc {desktop -f,node -d} 'I II III IV V VI VII VIII'
+# super + {_,shift + }{1-8}
+# 	bspc {desktop -f,node -d} 'I II III IV V VI VII VIII' || bspc {desktop -f,node -d} 'lI lII lIII lIV lV lVI lVII lVIII' || bspc {desktop -f,node -d} 'rI rII rIII rIV rV rVI rVII rVIII'
 
-# super + alt + {1-9,0}
-super + alt + {1-8}
-    bspc node -d 'I II III IV V VI VII VIII' --follow
 	
 #
 # preselect
@@ -141,7 +155,7 @@ super + {Left,Down,Up,Right}
 # volume
 #
 XF86AudioRaiseVolume
-	~/.config/eww/eww-bar/scripts/volume up
+	~/.config/sxhkd/scripts/volume up
 
 XF86AudioLowerVolume
-	~/.config/eww/eww-bar/scripts/volume down
+	~/.config/sxhkd/scripts/volume down

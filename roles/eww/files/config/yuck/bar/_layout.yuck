@@ -1,0 +1,39 @@
+(include "yuck/bar/lib/_workspace.yuck")
+(include "yuck/bar/lib/_date.yuck")
+(include "yuck/bar/lib/_volume.yuck")
+(include "yuck/bar/lib/_powermenu.yuck")
+
+;; bar
+(defwidget complex_bar [type]
+  (box :class "bar_class"
+       :orientation "h"
+    (left)
+    (center :type type)
+    (right :type type)
+))
+
+(defwidget left []
+	(box :orientation "h" 
+		 :space-evenly false  
+         :halign "start"
+		 :class "left_modules"
+(workspaces)))
+
+(defwidget center [type]
+	(box :orientation "h" 
+         :visible { type == "complex" }
+		 :space-evenly false  
+         :halign "center"
+		 :class "center_modules"
+    (clock_module)
+))
+
+(defwidget right [type]
+	(box :orientation "h" 
+         :visible { type == "complex" }
+		 :space-evenly false  
+         :halign "end"
+		 :class "right_modules"
+    (volume)
+    (powermenu))
+)

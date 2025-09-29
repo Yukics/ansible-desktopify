@@ -1,0 +1,5 @@
+(deflisten workspace "~/.config/eww/shell/workspace" )
+
+(defwidget workspaces []
+  (literal :content workspace)
+)

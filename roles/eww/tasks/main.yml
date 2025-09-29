@@ -86,7 +86,7 @@
 - name: Copy eww configuration files
   copy:
     mode: "preserve"
-    src: ./files/config.{{ computer }}/
+    src: ./files/config/
     dest: ~/.config/eww
 
 - name: Update .profile

@@ -1,0 +1,14 @@
+(include "yuck/bar/_layout.yuck")
+
+(defwindow bar [type]
+    :monitor 0
+    :geometry (geometry :x "0%"
+                :y "2px"
+                :width "100%"
+                :height "18px"
+                :anchor "top center")
+    :reserve (struts :distance "18px" :side "top")
+    :stacking "fg"
+    :windowtype "dock"
+    :wm-ignore false 
+(complex_bar :type type))

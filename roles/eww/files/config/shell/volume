@@ -1,0 +1,17 @@
+#!/bin/sh
+
+volume (){
+    INDEX=$(pactl list short | grep RUNNING | sed -e 's,^\([0-9][0-9]*\)[^0-9].*,\1,') 
+    CURRENT=$(pactl get-sink-volume $INDEX | tr '\/' '\n' | grep front | sed 's/Volume\: //g' | awk '{print $4}')
+    PERCENTAGE=$(( $CURRENT*100/65536 ))
+
+    WIDGET="(box :class \"works\"	      :orientation \"h\"       :spacing 5       :space-evenly \"true\"  "
+    WIDGET="$WIDGET (button :onclick \"bspc desktop -f $DESKTOP\"	         :class	\"workspace-dot\"	\"$ICON\")  "
+    WIDGET="$WIDGET )"
+
+}
+
+volume
+pactl subscribe | grep --line-buffered "sink" | while IFS= read -r STATE ; do
+    volume
+done
