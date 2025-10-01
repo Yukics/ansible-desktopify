@@ -2,7 +2,7 @@
 
 echo "input: $1" >> /tmp/log
 
-CURRENT_WORKSPACE=$(bspc query -D -m last -d focused --names)
+CURRENT_WORKSPACE=$(bspc query -D -m last -d focused --names || bspc query -D -d focused --names)
 MONITOR=$(bspc query -M --names | head -1)
 
 if [ "$1" = "prev" ]; then

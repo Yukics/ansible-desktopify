@@ -1,4 +1,4 @@
-(defpoll clock_time :interval "5m" "date +\%I")
+(defpoll clock_time :interval "5m" "date +\%H")
 (defpoll clock_minute :interval "5s" "date +\%M")
 (defpoll clock_date :interval "10h" "date '+%d/%m/%Y'")
 (defpoll calendar_day :interval "20h" "date '+%d'")
@@ -6,8 +6,8 @@
 (defvar time_rev false)
 
 (defwidget clock_module []
-  (eventbox :onhover "${eww} update time_rev=true"
-			  :onhoverlost "${eww} update time_rev=false"
+  (eventbox :onhover "eww update time_rev=true"
+			  :onhoverlost "eww update time_rev=false"
     (box :class "clock_module" :space-evenly "false" :orientation "h" :spacing "3" 
       (label :text clock_time :class "clock_time_class" )
       (label :text ":" :class "clock_time_sep" )
@@ -15,9 +15,7 @@
       (revealer :transition "slideleft"
           :reveal time_rev
           :duration "350ms"
-        (button :class "clock_date_class"
-              :onclick "$HOME/.config/eww/eww-bar/scripts/pop calendar" clock_date
-          )
+        (button :class "clock_date_class" clock_date )
       )
     )
   )

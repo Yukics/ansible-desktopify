@@ -93,6 +93,3 @@
   lineinfile:
     dest: ~/.profile
     line: "export XDG_CONFIG_HOME=~/.config"
-
-#- name: Reload eww
-#  shell: ~/.local/bin/eww reload

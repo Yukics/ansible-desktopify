@@ -1,4 +1,5 @@
 (deflisten volume_box "~/.config/eww/shell/volume" )
+(defvar volume_rev false)
 
 (defwidget volume []
     (literal :content volume_box)

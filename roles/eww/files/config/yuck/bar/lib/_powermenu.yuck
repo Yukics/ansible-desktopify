@@ -1,9 +1,8 @@
 (defvar powermenu_display false)
-(defvar eww "~/.local/bin/eww")
 
 (defwidget powermenu []
-  (eventbox :onhover "${eww} update powermenu_display=true"
-			  :onhoverlost "${eww} update powermenu_display=false"
+  (eventbox :onhover "eww update powermenu_display=true"
+			  :onhoverlost "eww update powermenu_display=false"
     (box :class "powermenu_module" :space-evenly "false" :orientation "h" :spacing "3" 
       (label :text "⏻ " :class "powermenu_label" )
       (revealer :transition "slideright"

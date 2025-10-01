@@ -1,14 +1,25 @@
 #!/bin/sh
 
 volume (){
-    INDEX=$(pactl list short | grep RUNNING | sed -e 's,^\([0-9][0-9]*\)[^0-9].*,\1,') 
-    CURRENT=$(pactl get-sink-volume $INDEX | tr '\/' '\n' | grep front | sed 's/Volume\: //g' | awk '{print $4}')
-    PERCENTAGE=$(( $CURRENT*100/65536 ))
+    INDEX=$(pactl list short | grep RUNNING | sed -e 's,^\([0-9][0-9]*\)[^0-9].*,\1,' | head -1) 
+    
+    ICON=""
+    PERCENTAGE="No audio"
 
-    WIDGET="(box :class \"works\"	      :orientation \"h\"       :spacing 5       :space-evenly \"true\"  "
-    WIDGET="$WIDGET (button :onclick \"bspc desktop -f $DESKTOP\"	         :class	\"workspace-dot\"	\"$ICON\")  "
-    WIDGET="$WIDGET )"
+    if ! [ -z $INDEX ]; then
+        CURRENT=$(pactl get-sink-volume $INDEX | tr '\/' '\n' | grep front | sed 's/Volume\: //g' | awk '{print $4}')
+        ICON=""
+        PERCENTAGE=$(($CURRENT*100/65536))
+        $(( $PERCENTAGE < 50 )) && ICON=""
+        PERCENTAGE="$PERCENTAGE %"
+    fi
 
+    WIDGET="(eventbox :onhover \"eww update volume_rev=true\" :onhoverlost \"eww update volume_rev=false\" "
+    WIDGET="$WIDGET (box :class \"volume_module\" :orientation \"h\" :space-evenly \"true\" "
+    WIDGET="$WIDGET (label :text \"$ICON\" :class \"volume_icon\" ) "
+    WIDGET="$WIDGET (revealer :transition \"slideleft\" :reveal volume_rev :duration \"350ms\" (label :text \"$PERCENTAGE\" :class \"volume_text\" ) ) "
+    WIDGET="$WIDGET ) "
+    echo "$WIDGET )"
 }
 
 volume

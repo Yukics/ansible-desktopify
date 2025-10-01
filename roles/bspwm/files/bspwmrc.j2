@@ -1,5 +1,6 @@
 #!/bin/sh
 
+[ -f ~/.xprofile ] && . ~/.xinitrc && ~/.xinitrc
 pgrep -x sxhkd > /dev/null || sxhkd &
 pgrep -x picom > /dev/null || picom -f --daemon --config "$HOME/.config/picom/picom.conf" &
 # pgrep -x polybar > /dev/null || $HOME/.config/polybar/yuki/launch.sh &
@@ -8,31 +9,46 @@ ps aux | grep ~/.config/wallpapers/script.sh | grep -v grep | awk '{print $2}' |
 ~/.config/wallpapers/script.sh 15 & # rotate wallpaper every 15min
 xsetroot -cursor_name left_ptr
 
+~/.local/bin/eww kill
 killall eww
+sleep 0.1
+
 # screen arg is necessary for workspace script to work 
+# bspc query -M --names
+# setup monocle layout by default
+
+# {{ computer_type[computer]['monitors'][0]['name'] }}
 eww open bar --screen {{ computer_type[computer]['monitors'][0]['name'] }} --arg type=complex &
+bspc config -m {{ computer_type[computer]['monitors'][0]['name'] }} top_padding {{ computer_type[computer]['monitors'][0]['top_padding'] }} 
+DESKTOP="{{ computer_type[computer]['monitors'][0]['desktops'] }}"
+bspc monitor {{ computer_type[computer]['monitors'][0]['name'] }} -d $DESKTOP
+for workspace in $DESKTOP; do bspc desktop $workspace --layout monocle; done 
+
 {% if computer == "workstation" %}
 {% for monitor in computer_type[computer]['monitors']%}
 {% if monitor['position'] == "left" %}
+
+# {{ monitor['name'] }}
+if xrandr | grep "{{ monitor['name'] }}" | grep -q " connected "; then
 eww open bar --screen {{ monitor['name'] }} --arg type=simple &
+bspc config -m {{ monitor['name'] }} top_padding {{ monitor['top_padding'] }} 
+DESKTOP="{{ monitor['desktops'] }}"
+bspc monitor {{ monitor['name'] }} -d $DESKTOP
+for workspace in $DESKTOP; do bspc desktop $workspace --layout monocle; done
+fi
 {% endif %}
 {% if monitor['position'] == "right" %}
+# {{ monitor['name'] }}
+if xrandr | grep "{{ monitor['name'] }}" | grep -q " connected "; then
 eww open bar --screen {{ monitor['name'] }} --arg type=simple &
-{% endif %}
-{% endfor %}
-{% endif %}
-
-# bspc query -M --names
-{% for monitor in computer_type[computer]['monitors'] %}
 bspc config -m {{ monitor['name'] }} top_padding {{ monitor['top_padding'] }} 
-{% endfor %}
-
-# setup monocle layout by default
-{% for monitor in computer_type[computer]['monitors'] %}
 DESKTOP="{{ monitor['desktops'] }}"
 bspc monitor {{ monitor['name'] }} -d $DESKTOP
 for workspace in $DESKTOP; do bspc desktop $workspace --layout monocle; done 
+fi
+{% endif %}
 {% endfor %}
+{% endif %}
 
 bspc config pointer_motion_interval {{ computer_type[computer]['min_refresh_rate'] }}
 bspc config border_width         2

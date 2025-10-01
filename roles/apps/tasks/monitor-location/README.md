@@ -6,8 +6,8 @@ xrandr -q | grep "^[^\ ].*" | grep -v Screen
 # Set screen location and refresh
 
 ```bash
-xrandr  --output DP-0 --mode 1920x1080 --pos 0x0 --rotate normal --rate 239.76 --primary
-xrandr  --output DP-2 --mode 2560x1440 --pos 1920x360 --rotate normal --rate 144.01
+xrandr  --output DP-0 --mode 1920x1080 --pos 0x0 --rotate normal -r 239.76 --primary
+xrandr  --output DP-2 --mode 2560x1440 --pos 1920x360 --rotate normal -r 144.01
 ```
 
 ## Easy way
